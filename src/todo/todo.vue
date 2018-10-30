@@ -112,6 +112,9 @@
             },
 
             toggleFilter(state) {
+                //从this.filter切换到state
+                console.log(this.filter);//all
+                console.log(state);//completed
                 this.filter = state;
             },
             
