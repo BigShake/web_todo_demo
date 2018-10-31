@@ -64,7 +64,6 @@
                 //filter过滤数组
                 return this.todos_tabs.filter((x) => {
                     //x是数组todos_tabs里的遍历。filter筛选之后会组成一个新的数组。
-                    //filter(x => !x.completed)
                     console.log(x.completed);
                     if(!x.completed){
                         console.log(x);

@@ -32,7 +32,9 @@
         -->
         <!-- 输入的todo事件的模块
             在父组件中子组件引用处添加函数v-on:delete_item="function1"； 
-            //其中 delete_item 为子组件中使用函数，function1为父组件赋值函数 -->
+            其中 delete_item 为子组件中使用函数，function1为父组件赋值函数 
+            todo.id是从组件
+            -->
         <APP_Item :todo_item="todo"
                   v-for="todo in filteredTodos"
                   v-bind:key="todo.id"
@@ -71,12 +73,21 @@
             filteredTodos() {
                 if (this.filter === 'all') {
                     return this.todos;
+                } else if(this.filter === 'completed'){
+                    // 将todos数组中，completed为true的值过滤出来，并返回一个新数组
+                    return this.todos.filter((mm)=>{
+                        if(mm.completed){
+                            return mm;
+                        }
+                    });
+                } else if (this.filter === 'active') {
+                    // 将todos数组中，completed为false的值过滤出来，并返回一个新数组
+                    return this.todos.filter((mm)=>{
+                        if(!mm.completed){
+                            return mm;
+                        }
+                    });
                 }
-                const completed = this.filter === 'completed';
-
-                // 将todos数组中，completed为true的值过滤出来，并返回一个新数组
-                return this.todos.filter(todo => completed === todo.completed);
-
             }
         },
 
@@ -108,6 +119,7 @@
             },
             
             deleteTodo(id) {
+                //splice() 方法从数组中添加/删除项目，然后返回被删除的项目。
                 this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
             },
 
@@ -120,7 +132,12 @@
             
             clearAllCompleted() {
                 // 给todos赋一个新的值（即todo.completed为false的值）
-                this.todos = this.todos.filter(todo => todo.completed === false)
+                // 清除已完成的事件，即是重新给todos数组赋值，赋值的标准是completed字段为false的数据
+                this.todos = this.todos.filter((x)=>{
+                    if(!x.completed){
+                        return x;
+                    }
+                });
             }
         }
     };
@@ -128,9 +145,9 @@
 
 <style lang="stylus" scoped>
     .real-app {
-        width 600px
-        margin 0 auto
-        box-shadow 0 0 5px #666
+        width 600px;
+        margin 0 auto;
+        box-shadow 0 0 5px #666;
     }
 
     .add-input {
